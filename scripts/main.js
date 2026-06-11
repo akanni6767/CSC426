@@ -33,19 +33,35 @@ const handle_power = (base, pow) => {
     return _pow;
 }
 
+// delete sequence
+const delete_seq = exps => {
+    if (exps == undefined) {
+        return handleClear();
+    }
+    exps = exps.split("");
+    if (exps.length > 0) {
+        exps = exps.slice(0, exps.length - 1);
+    }
+    return exps;
+}
+
 // clear func
-const handleClear = () => {
+const handleClear = (show_update=true) => {
     op1 = '', op2 = '', basic_op = '', __error_result = '', __progress_result = '';
-    used_op = '', allowInput = true, _live_calc='';
-    update_progress(empty_space);
+    used_op = '', allowInput = true, _live_calc = '';
+    
+    show_update ? update_progress(empty_space) : '';
 }
 
 // raw
 const raw = document.querySelector('#raw');
 
 
-const update_progress = value => {
-    document.querySelector('#progress').innerHTML = value;
+const update_progress = (value = '') => {
+    if (!value) {
+        value = __progress_result;
+    }
+    document.querySelector('#progress').innerHTML = value == 'undefined' ? empty_space : value;
 }
 
 const isExpContain_ex_operators = exp => {
@@ -70,22 +86,44 @@ const handle_operands = async (exp, current_input) => {
             op1 = handleBasic_op(exps[0]);
         }
         if (exps[1] && exps[1] != '') {
-            console.log('exp1', '3', exps[1]);
+            // console.log('exp1', '3', exps[1]);
             if (await isAri_exp(exps[1])) {
                 if (await basicMath(current_input)) {
-                    console.log('back', exps[1])
+                    // console.log('back', exps[1])
                     op2 = handleBasic_op(exps[1]);
+                    // console.log('op2',op2)
+                    // perform operation on exps
+                    if (op2 !== undefined) {
+                        solve_operands(op1, op2, sep, current_input);
+                    }
+                        
                 }
             }
         }
         
     }
-
     
 }
 
+const solve_operands = (op1, op2, operator, cur_input) => {
+    if (operator == "\\") {
+        const remind = handle_reminder(op1, op2);
+        _live_calc = remind;
+        save_recent(remind);
+    }
+    console.log('operator',operator)
+    if (operator == "^") {
+        console.log('powe')
+        const _pow = handle_power(op1, op2);
+        _live_calc = _pow;
+        save_recent(_pow);
+    }
+};
+
+
 const show_progress = current_input => {
     if (!allowInput) return;
+    
     if (__error_result != '') {
         return update_progress(__progress_result);
     }
@@ -94,6 +132,9 @@ const show_progress = current_input => {
             current_input = ' '+current_input+' ';
         }
         __progress_result += current_input;
+        console.log(3882, __progress_result, __progress_result == current_input)
+        if (isEx_operator(current_input) && __progress_result == current_input) {
+        }
 
         update_progress(__progress_result);
     }
@@ -101,6 +142,7 @@ const show_progress = current_input => {
 }
 
 const save_recent = value => {
+    if (!value) value = _live_calc;
     __recent_result = value;
     document.querySelector('#recent').innerHTML = __recent_result;
 }
@@ -139,7 +181,6 @@ const isAri_exp = async exp => {
     return new Promise((res, rej) => {
         exp.split("").forEach(str => {
             if (ex_operators.includes(str)) {
-                console.log('ex ops', str)
                 res(false);
             }
         });
@@ -165,6 +206,24 @@ const handleClick = async (value) => {
     if (isBack_op(value) && value == 'ac') {
 
         return handleClear();
+    }
+
+     // handle sequence delete 
+    if (isBack_op(value) && value == 'del') {
+        let del_exp = (delete_seq(__progress_result));
+        console.log(del_exp)
+        if (del_exp == undefined) return;
+        del_exp = del_exp.join('');
+
+        if (del_exp.length) {
+            console.log(3)
+            __progress_result = del_exp;
+        } else {
+            __progress_result = "&nbsp;";
+        }
+
+        console.log(__progress_result, '__progress_result');
+        return update_progress();
     }
     
     // raw.innerHTML = basicMath();
@@ -200,11 +259,26 @@ const handleClick = async (value) => {
         used_op = '';
     }
 
+    // handle mod
+    const _pow = "^";
+    if (isEx_operator(value) && value == _pow) {
+        __progress_result = _live_calc + ' '+_pow+' ';
+        update_progress(__progress_result);
+        used_op = '';
+    }
 
     // handle solve 
+    if (isBack_op(value) && value == '=') {
+        __recent_result = _live_calc;
+        __progress_result = _live_calc;
+        update_progress();
+        save_recent();
+        handleClear(false);
+    } else {
+        handle_operands(__progress_result, value);
+    }
 
     
-    handle_operands(__progress_result, value);
  
 }
 
