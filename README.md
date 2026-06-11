@@ -198,7 +198,7 @@ Works in all modern browsers that support:
 - Implement calculator history
 - Add keyboard support
 - Improve error handling and validation
-- Add number formatting for large results
+- Add number formatting for large results	
 - Support for more mathematical functions (square root, trigonometric, etc.)
 
 ## Development
