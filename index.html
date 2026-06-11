@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureLogin</title>
+  <link rel="stylesheet" href="secure_login/style.css" />
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Login view -->
+  <div id="login-view">
+    <h1>Sign in</h1>
+    <p class="subtitle">Enter your credentials to continue</p>
+
+    <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+
+    <form id="login-form" novalidate autocomplete="on">
+
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username">Username or email</label>
+        <div class="input-wrap">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            autocomplete="username"
+            placeholder="e.g. admin or admin@example.com"
+            aria-required="true"
+            aria-describedby="username-error"
+          />
+        </div>
+        <div class="field-error" id="username-error" role="alert"></div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="current-password"
+            placeholder="Enter your password"
+            aria-required="true"
+            aria-describedby="password-error"
+          />
+          <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Show password">
+            <!-- eye open -->
+            <svg id="eye-show" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/>
+              <circle cx="8" cy="8" r="2"/>
+            </svg>
+            <!-- eye closed -->
+            <svg id="eye-hide" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                 style="display:none">
+              <path d="M13.4 13.4 2.6 2.6M6.3 6.4a2 2 0 0 0 2.8 2.8M3.5 3.5C2.2 4.6 1 6 1 8c0 0 2.5 5 7 5 1.5 0 2.8-.5 3.9-1.2M5.2 2.5C6 2.2 7 2 8 2c4.5 0 7 5 7 5a12.7 12.7 0 0 1-1.8 2.7"/>
+            </svg>
+          </button>
+        </div>
+        <div class="field-error" id="password-error" role="alert"></div>
+      </div>
+
+      <!-- Options -->
+      <div class="options-row">
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="remember-me" name="remember" />
+          Remember me
+        </label>
+        <button type="button" class="link-btn" id="forgot-btn">Forgot password?</button>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+        <button type="submit" class="btn btn-primary" id="submit-btn">
+          <span id="btn-label">Sign in</span>
+          <div class="spinner" id="btn-spinner" aria-hidden="true"></div>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Demo hint -->
+    <div class="demo-hint" aria-label="Demo credentials">
+      Demo &mdash; username: <code>admin</code> &nbsp; password: <code>Admin@123</code>
+    </div>
+  </div>
+
+  <!-- Success view -->
+  <div class="success-screen" id="success-view" role="region" aria-label="Logged in">
+    <div class="check-icon" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+           stroke="#27ae60" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12l5 5 9-9"/>
+      </svg>
+    </div>
+    <h2>Signed in</h2>
+    <p>Authentication successful.</p>
+    <div class="user-badge">
+      <div class="user-avatar" id="user-initials">--</div>
+      <span id="logged-user">User</span>
+    </div>
+    <br/>
+    <button class="btn btn-secondary btn-logout" id="logout-btn">Sign out</button>
+  </div>
+
+</div>
+
+<script src="secure_login/app.js"></script>
+</body>
+</html>
