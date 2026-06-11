@@ -36,7 +36,7 @@ const handle_power = (base, pow) => {
 // clear func
 const handleClear = () => {
     op1 = '', op2 = '', basic_op = '', __error_result = '', __progress_result = '';
-    used_op = '', allowInput = true;
+    used_op = '', allowInput = true, _live_calc='';
     update_progress(empty_space);
 }
 
@@ -48,19 +48,52 @@ const update_progress = value => {
     document.querySelector('#progress').innerHTML = value;
 }
 
+const isExpContain_ex_operators = exp => {
+    let ex = [false];
+    ex_operators.forEach(op => { 
+        if (exp.includes(op)) {
+            ex = [true, op];
+        }
+    });
+    return ex;
+}
 
+// handle op1 and op2
+const handle_operands = async (exp, current_input) => {
+    const ops = isExpContain_ex_operators(exp);
+    
+    if (ops[0]) {
+        const sep = ops[1];
+        const exps = exp.split(sep);
 
+        if (exps[0] && exps[0] != '') {
+            op1 = handleBasic_op(exps[0]);
+        }
+        if (exps[1] && exps[1] != '') {
+            console.log('exp1', '3', exps[1]);
+            if (await isAri_exp(exps[1])) {
+                if (await basicMath(current_input)) {
+                    console.log('back', exps[1])
+                    op2 = handleBasic_op(exps[1]);
+                }
+            }
+        }
+        
+    }
 
-const show_progress = value => {
+    
+}
+
+const show_progress = current_input => {
     if (!allowInput) return;
     if (__error_result != '') {
         return update_progress(__progress_result);
     }
-    if(!back_fn.includes(value)) {
-        if (ex_operators.includes(value) || operators.includes(value)) {
-            value = ' '+value+' ';
+    if(!back_fn.includes(current_input)) {
+        if (ex_operators.includes(current_input) || operators.includes(current_input)) {
+            current_input = ' '+current_input+' ';
         }
-        __progress_result += value;
+        __progress_result += current_input;
 
         update_progress(__progress_result);
     }
@@ -73,7 +106,7 @@ const save_recent = value => {
 }
 
 // check basic math in expression
-const basicMath = async value => {
+const basicMath = async current_input => {
     return new Promise((res, rej) => {
         let isBasic = true;
 
@@ -86,7 +119,7 @@ const basicMath = async value => {
         // });
         
         // if last value is ari_op => false
-        if (operators.includes(value)) isBasic = false;
+        if (operators.includes(current_input)) isBasic = false;
 
         // if expr contain ex_op false
         const merge_ex_ops = [...ex_operators, ...back_fn];
@@ -99,6 +132,19 @@ const basicMath = async value => {
     
         res(isBasic);
     });
+}
+
+// arithemetic exp
+const isAri_exp = async exp => {
+    return new Promise((res, rej) => {
+        exp.split("").forEach(str => {
+            if (ex_operators.includes(str)) {
+                console.log('ex ops', str)
+                res(false);
+            }
+        });
+        res(true);
+    })
 }
 
 // backend_op
@@ -114,18 +160,28 @@ const isEx_operator = value => {
 // operators used in exp
 
 const handleClick = async (value) => {
+
+    // clear func
+    if (isBack_op(value) && value == 'ac') {
+
+        return handleClear();
+    }
     
     // raw.innerHTML = basicMath();
     show_progress(value);
 
-    handle_used_operators(value)
+    handle_used_operators(value);
+
     raw.innerHTML = used_op;
     // basic math
-    if (await basicMath(value)) {
-        __error_result += ''
-        _live_calc = handleBasic_op(__progress_result);
-        save_recent(_live_calc);
-    }
+    if (await isAri_exp(__progress_result)) {
+        if (await basicMath(value)) {
+            // __error_result += ''
+            _live_calc = handleBasic_op(__progress_result);
+            
+            save_recent(_live_calc);
+        }
+    } 
 
     // handle percentage
     if (isEx_operator(value) && value == '%') {
@@ -134,29 +190,26 @@ const handleClick = async (value) => {
         save_recent(percent);
     }
 
-    // handle mod
-    if (isEx_operator(value) && value == "\\") {
 
-        let percent = handle_reminder(_live_calc, value);
-        save_recent(percent);
+    // Re-construct expression
+    // handle mod
+    const rem = "\\";
+    if (isEx_operator(value) && value == rem) {
+        __progress_result = _live_calc + ' '+rem+' ';
+        update_progress(__progress_result);
+        used_op = '';
     }
 
 
     // handle solve 
 
-
-    // clear func
-    if (isBack_op(value) && value == 'ac') {
-
-        handleClear();
-    }
     
-    
+    handle_operands(__progress_result, value);
+ 
 }
 
 const handleBasic_op = exp => { 
     try {
-
         return eval(exp);
     } catch (error) {
         __error_result = 'Error!:'+exp+error;
