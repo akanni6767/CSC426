@@ -4,14 +4,16 @@ const SESSION_KEY = 'securelogin_session';
 
 /* ── Helpers: user store ── */
 function getUsers() {
-  try { return JSON.parse(localStorage.getItem(USERS_KEY)) || {}; }
+  try { 
+    // console.log(localStorage.getItem(USERS_KEY));
+    return JSON.parse(localStorage.getItem(USERS_KEY)) || {}; }
   catch { return {}; }
 }
 
 function initUsers() {
   const users = getUsers();
-  if (!users['admin']) {
-    users['admin'] = { password: 'Admin@123', email: 'admin@example.com', name: 'Admin User' };
+  if (!users['akeem']) {
+    users['akeem'] = { password: '$akeem__', email: 'softdephjs@gmail.com', name: 'Admin User' };
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
   }
 }
