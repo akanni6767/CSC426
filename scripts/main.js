@@ -1,13 +1,27 @@
 
 const back_fn = ["del", "ac", "="];
-const ex_operators = ["\\", "%"];
-const operators = ["^", "*", "-", "+", "/"];
+const ex_operators = ["^", "\\", "%"];
+const operators = ["*", "-", "+", "/"];
+let used_op = '';
+let __progress_result = '';
+let __error_result = '';
+let __recent_result = '';
+const empty_space = '&nbsp;';
+let allowInput = true;
+
+let _live_calc = '', op1 = '', op2 = '', basic_op='';
 
 const handle_percentage = val => {
     return val / 100;
 }
 
+const handle_used_operators = value => {
+    const merge_ops = [...ex_operators, ...operators];
+    used_op += merge_ops.includes(value) ? value : '';
+}
+
 const handle_reminder = (first, second) => {
+    console.log(first, second);
     return first % second;
 }
 
@@ -19,17 +33,28 @@ const handle_power = (base, pow) => {
     return _pow;
 }
 
-let __progress_result = '';
-let __error_result = '';
-let __recent_result = '';
+// clear func
+const handleClear = () => {
+    op1 = '', op2 = '', basic_op = '', __error_result = '', __progress_result = '';
+    used_op = '', allowInput = true;
+    update_progress(empty_space);
+}
 
-let _live_calc = '', op1 = '', op2 = '', basic_op='';
+// raw
+const raw = document.querySelector('#raw');
+
+
+const update_progress = value => {
+    document.querySelector('#progress').innerHTML = value;
+}
+
 
 
 
 const show_progress = value => {
+    if (!allowInput) return;
     if (__error_result != '') {
-        return document.querySelector('#progress').innerHTML = __progress_result;
+        return update_progress(__progress_result);
     }
     if(!back_fn.includes(value)) {
         if (ex_operators.includes(value) || operators.includes(value)) {
@@ -37,7 +62,7 @@ const show_progress = value => {
         }
         __progress_result += value;
 
-        document.querySelector('#progress').innerHTML = __progress_result;
+        update_progress(__progress_result);
     }
 
 }
@@ -48,29 +73,94 @@ const save_recent = value => {
 }
 
 // check basic math in expression
-const basicMath = () => {
-    let isBasic = false;
-    operators.forEach(op => {
-        if (__progress_result.includes(op)) {
-            isBasic = true;
-        }
-    })
-}
+const basicMath = async value => {
+    return new Promise((res, rej) => {
+        let isBasic = true;
 
-const handleClick = (value) => {
+        // only arithemetic operations
+        // operators.forEach(ari_op => {
+        //     if (used_op.includes(ari_op)) {
+        //         console.log(ari_op)
+        //         isBasic = true;
+        //     }
+        // });
+        
+        // if last value is ari_op => false
+        if (operators.includes(value)) isBasic = false;
+
+        // if expr contain ex_op false
+        const merge_ex_ops = [...ex_operators, ...back_fn];
+        merge_ex_ops.forEach(ex_op => {
+            if (used_op.includes(ex_op)) {
+                isBasic = false;
+            }
+        })
+        raw.innerHTML = isBasic + used_op;
     
-    // basic math
-    if (basicMath()) {
-        _live_calc = handleBasic_op(__progress_result);
-    }
-    show_progress(value);
+        res(isBasic);
+    });
 }
 
-const handleBasic_op = exp => {
+// backend_op
+const isBack_op = value => {
+    return back_fn.includes(value);
+}
+
+// isEx_operators
+const isEx_operator = value => {
+    return ex_operators.includes(value);
+}
+
+// operators used in exp
+
+const handleClick = async (value) => {
+    
+    // raw.innerHTML = basicMath();
+    show_progress(value);
+
+    handle_used_operators(value)
+    raw.innerHTML = used_op;
+    // basic math
+    if (await basicMath(value)) {
+        __error_result += ''
+        _live_calc = handleBasic_op(__progress_result);
+        save_recent(_live_calc);
+    }
+
+    // handle percentage
+    if (isEx_operator(value) && value == '%') {
+        let percent = handle_percentage(_live_calc);
+        allowInput = false;
+        save_recent(percent);
+    }
+
+    // handle mod
+    if (isEx_operator(value) && value == "\\") {
+
+        let percent = handle_reminder(_live_calc, value);
+        save_recent(percent);
+    }
+
+
+    // handle solve 
+
+
+    // clear func
+    if (isBack_op(value) && value == 'ac') {
+
+        handleClear();
+    }
+    
+    
+}
+
+const handleBasic_op = exp => { 
     try {
+
         return eval(exp);
     } catch (error) {
-        __error_result = 'Error!';
+        __error_result = 'Error!:'+exp+error;
+        raw.innerHTML = __error_result;
         show_progress('');
     }
 }
