@@ -21,7 +21,7 @@ const handle_used_operators = value => {
 }
 
 const handle_reminder = (first, second) => {
-    console.log(first, second);
+    // console.log(first, second);
     return first % second;
 }
 
@@ -65,7 +65,7 @@ const update_progress = (value = '') => {
     if (!value) {
         value = __progress_result;
     }
-    console.log(value, 'vlauel')
+    // console.log(value, 'vlauel')
     if (value == 'undefined' || value == '') {
         document.querySelector('#progress').innerHTML = empty_space;
     } else {
@@ -76,7 +76,7 @@ const update_progress = (value = '') => {
             let re_ops = ' ' + ops + ' ';
             if (exprss.includes(ops)) {
                 exprss = exprss.replaceAll(ops, re_ops);
-                console.log('resssp', exprss)
+                // console.log('resssp', exprss)
             }
         });
         document.querySelector('#progress').innerHTML = exprss;
@@ -126,9 +126,9 @@ const solve_operands = (op1, op2, operator, cur_input) => {
         _live_calc = remind;
         save_recent(remind);
     }
-    console.log('operator',operator)
+    // console.log('operator',operator)
     if (operator == "^") {
-        console.log('powe')
+        // console.log('powe')
         const _pow = handle_power(op1, op2);
         _live_calc = _pow;
         save_recent(_pow);
@@ -154,7 +154,7 @@ const show_progress = current_input => {
             __progress_result = '';
             return handleClear();
         }
-        console.log('secod')
+        // console.log('secod')
         update_progress(__progress_result);
     }
 
@@ -230,7 +230,7 @@ const handleClick = async (value) => {
      // handle sequence delete 
     if (isBack_op(value) && value == 'del') {
         let del_exp = (delete_seq(__progress_result));
-        console.log(del_exp)
+        // console.log(del_exp)
         if (del_exp == undefined) return;
         del_exp = del_exp.join('');
 
@@ -240,7 +240,7 @@ const handleClick = async (value) => {
             __progress_result = "";
         }
 
-        console.log(__progress_result, '__progress_result');
+        // console.log(__progress_result, '__progress_result');
         return update_progress();
     }
     

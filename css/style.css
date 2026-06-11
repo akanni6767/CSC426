@@ -20,6 +20,7 @@
     --color: var(--dark-primary-color);
 
     --border-color: var(--dark-border-color);
+    --btn-color: var(--dark-secondary);
 
     --size: 20px;
     --secondary-size: 18px;
@@ -33,7 +34,7 @@
 
 html {
 
-    min-width: 350px;
+    /* min-width: 350px; */
 }
 
 body {
@@ -43,7 +44,7 @@ body {
 
 main {
     max-width: 90%;
-    min-width: 50%;
+    min-width: 400px;
     width: 400px;
     border: 1px solid var(--border-color);
     display: flex;
@@ -51,6 +52,8 @@ main {
     flex-direction: column;
     gap: 24px;
 }
+
+scr
 
 /* screen section */
 #result-screen {
@@ -68,7 +71,7 @@ main {
 
     #recent {
         font-size: var(--small-size);
-        color: var(--dark-secondary);
+        color: var(--btn-color);
     }
 
     #progress {
@@ -114,12 +117,12 @@ main {
             }
 
             button {
-                background-color: var(--dark-secondary);
+                background-color: var(--btn-color);
                 border: none;
                 width: 100%;
                 height: 100%;
                 cursor: pointer;
-                color: var(--dark-primary-color);
+                color: var(--color);
                 font-size: var(--secondary-size);
                 display: flex;
                 justify-content: center;
