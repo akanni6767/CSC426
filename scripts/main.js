@@ -38,6 +38,10 @@ const delete_seq = exps => {
     if (exps == undefined) {
         return handleClear();
     }
+
+    if (exps == empty_space) {
+        return [];
+    }
     exps = exps.split("");
     if (exps.length > 0) {
         exps = exps.slice(0, exps.length - 1);
@@ -61,7 +65,22 @@ const update_progress = (value = '') => {
     if (!value) {
         value = __progress_result;
     }
-    document.querySelector('#progress').innerHTML = value == 'undefined' ? empty_space : value;
+    console.log(value, 'vlauel')
+    if (value == 'undefined' || value == '') {
+        document.querySelector('#progress').innerHTML = empty_space;
+    } else {
+        const merge_op = [...ex_operators, ...operators];
+        let exprss = value;
+        exprss = exprss.toString();
+        merge_op.forEach(ops => {
+            let re_ops = ' ' + ops + ' ';
+            if (exprss.includes(ops)) {
+                exprss = exprss.replaceAll(ops, re_ops);
+                console.log('resssp', exprss)
+            }
+        });
+        document.querySelector('#progress').innerHTML = exprss;
+    }
 }
 
 const isExpContain_ex_operators = exp => {
@@ -86,12 +105,9 @@ const handle_operands = async (exp, current_input) => {
             op1 = handleBasic_op(exps[0]);
         }
         if (exps[1] && exps[1] != '') {
-            // console.log('exp1', '3', exps[1]);
             if (await isAri_exp(exps[1])) {
                 if (await basicMath(current_input)) {
-                    // console.log('back', exps[1])
                     op2 = handleBasic_op(exps[1]);
-                    // console.log('op2',op2)
                     // perform operation on exps
                     if (op2 !== undefined) {
                         solve_operands(op1, op2, sep, current_input);
@@ -102,7 +118,6 @@ const handle_operands = async (exp, current_input) => {
         }
         
     }
-    
 }
 
 const solve_operands = (op1, op2, operator, cur_input) => {
@@ -120,30 +135,35 @@ const solve_operands = (op1, op2, operator, cur_input) => {
     }
 };
 
-
 const show_progress = current_input => {
-    if (!allowInput) return;
+    if (!allowInput) {
+        allowInput = true;
+        return;
+    };
     
     if (__error_result != '') {
-        return update_progress(__progress_result);
+        return update_progress(__progress_result); 
     }
-    if(!back_fn.includes(current_input)) {
+    if (!back_fn.includes(current_input)) {
         if (ex_operators.includes(current_input) || operators.includes(current_input)) {
-            current_input = ' '+current_input+' ';
+            current_input = current_input;
         }
         __progress_result += current_input;
-        console.log(3882, __progress_result, __progress_result == current_input)
-        if (isEx_operator(current_input) && __progress_result == current_input) {
+        if (ex_operators.includes(current_input.trim()) && __progress_result == current_input) {
+            
+            __progress_result = '';
+            return handleClear();
         }
-
+        console.log('secod')
         update_progress(__progress_result);
     }
 
-}
+};
 
 const save_recent = value => {
     if (!value) value = _live_calc;
-    __recent_result = value;
+    __recent_result = value ? value : 0;
+
     document.querySelector('#recent').innerHTML = __recent_result;
 }
 
@@ -201,7 +221,6 @@ const isEx_operator = value => {
 // operators used in exp
 
 const handleClick = async (value) => {
-
     // clear func
     if (isBack_op(value) && value == 'ac') {
 
@@ -216,10 +235,9 @@ const handleClick = async (value) => {
         del_exp = del_exp.join('');
 
         if (del_exp.length) {
-            console.log(3)
             __progress_result = del_exp;
         } else {
-            __progress_result = "&nbsp;";
+            __progress_result = "";
         }
 
         console.log(__progress_result, '__progress_result');
@@ -240,25 +258,28 @@ const handleClick = async (value) => {
             
             save_recent(_live_calc);
         }
+        // handle percentage
     } 
-
-    // handle percentage
     if (isEx_operator(value) && value == '%') {
         let percent = handle_percentage(_live_calc);
         allowInput = false;
         save_recent(percent);
     }
-
-
+    
+    
     // Re-construct expression
     // handle mod
     const rem = "\\";
     if (isEx_operator(value) && value == rem) {
-        __progress_result = _live_calc + ' '+rem+' ';
+        if (__progress_result.trim() == '') {
+            __progress_result = '';
+            return handleClear();
+        }
+        __progress_result = _live_calc + rem+' ';
         update_progress(__progress_result);
         used_op = '';
     }
-
+    
     // handle mod
     const _pow = "^";
     if (isEx_operator(value) && value == _pow) {
@@ -267,17 +288,17 @@ const handleClick = async (value) => {
         used_op = '';
     }
 
+
     // handle solve 
     if (isBack_op(value) && value == '=') {
         __recent_result = _live_calc;
-        __progress_result = _live_calc;
-        update_progress();
+        __progress_result = _live_calc ? _live_calc : 0;
+        update_progress('');
         save_recent();
         handleClear(false);
     } else {
         handle_operands(__progress_result, value);
     }
-
     
  
 }
@@ -285,10 +306,14 @@ const handleClick = async (value) => {
 const handleBasic_op = exp => { 
     try {
         return eval(exp);
-    } catch (error) {
-        __error_result = 'Error!:'+exp+error;
+    } catch ( error ) {
+        __error_result = 'Error!';
+        op2 = '';
         raw.innerHTML = __error_result;
         show_progress('');
+        handleClear();
+        update_progress(__error_result);
+        __progress_result = '';
     }
 }
 
