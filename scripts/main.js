@@ -58,7 +58,7 @@ const handleClear = (show_update=true) => {
 }
 
 // raw
-const raw = document.querySelector('#raw');
+// const raw = document.querySelector('#raw');
 
 
 const update_progress = (value = '') => {
@@ -190,7 +190,7 @@ const basicMath = async current_input => {
                 isBasic = false;
             }
         })
-        raw.innerHTML = isBasic + used_op;
+        // raw.innerHTML = isBasic + used_op;
     
         res(isBasic);
     });
@@ -249,7 +249,7 @@ const handleClick = async (value) => {
 
     handle_used_operators(value);
 
-    raw.innerHTML = used_op;
+    // raw.innerHTML = used_op;
     // basic math
     if (await isAri_exp(__progress_result)) {
         if (await basicMath(value)) {
@@ -309,7 +309,7 @@ const handleBasic_op = exp => {
     } catch ( error ) {
         __error_result = 'Error!';
         op2 = '';
-        raw.innerHTML = __error_result;
+        // raw.innerHTML = __error_result;
         show_progress('');
         handleClear();
         update_progress(__error_result);
