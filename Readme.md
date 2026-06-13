@@ -7,7 +7,7 @@ A clean, simple login authentication app built with plain HTML, CSS, and JavaScr
 ## Live Demo
 
 > **Deployed:** https://csc-426-xi.vercel.app/  
-> **GitHub:** https://github.com/akanni6767
+> **GitHub:** https://github.com/akanni6767/CSC426
 
 ---
 
