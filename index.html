@@ -10,7 +10,7 @@
 
 <div class="card">
 
-  <!-- Login view -->
+  
   <div id="login-view">
     <h1>Sign in</h1>
     <p class="subtitle">Enter your credentials to continue</p>
@@ -19,7 +19,7 @@
 
     <form id="login-form" novalidate autocomplete="on">
 
-      <!-- Username -->
+      
       <div class="form-group">
         <label for="username">Username or email</label>
         <div class="input-wrap">
@@ -36,7 +36,7 @@
         <div class="field-error" id="username-error" role="alert"></div>
       </div>
 
-      <!-- Password -->
+      
       <div class="form-group">
         <label for="password">Password</label>
         <div class="input-wrap">
@@ -50,13 +50,13 @@
             aria-describedby="password-error"
           />
           <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Show password">
-            <!-- eye open -->
+            
             <svg id="eye-show" width="16" height="16" viewBox="0 0 16 16" fill="none"
                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/>
               <circle cx="8" cy="8" r="2"/>
             </svg>
-            <!-- eye closed -->
+            
             <svg id="eye-hide" width="16" height="16" viewBox="0 0 16 16" fill="none"
                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                  style="display:none">
@@ -67,7 +67,7 @@
         <div class="field-error" id="password-error" role="alert"></div>
       </div>
 
-      <!-- Options -->
+      
       <div class="options-row">
         <label class="checkbox-wrap">
           <input type="checkbox" id="remember-me" name="remember" />
@@ -76,7 +76,7 @@
         <button type="button" class="link-btn" id="forgot-btn">Forgot password?</button>
       </div>
 
-      <!-- Action buttons -->
+      
       <div class="btn-row">
         <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
         <button type="submit" class="btn btn-primary" id="submit-btn">
@@ -87,13 +87,13 @@
 
     </form>
 
-    <!-- Demo hint -->
+    
     <div class="demo-hint" aria-label="Demo credentials">
       Demo &mdash; username: <code>akeem</code> &nbsp; password: <code>$akeem__</code>
     </div>
   </div>
 
-  <!-- Success view -->
+  
   <div class="success-screen" id="success-view" role="region" aria-label="Logged in">
     <div class="check-icon" aria-hidden="true">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none"

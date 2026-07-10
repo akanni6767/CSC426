@@ -1,11 +1,11 @@
-/* ── Storage keys ── */
+
 const USERS_KEY   = 'securelogin_users';
 const SESSION_KEY = 'securelogin_session';
 
-/* ── Helpers: user store ── */
+
 function getUsers() {
   try { 
-    // console.log(localStorage.getItem(USERS_KEY));
+    
     return JSON.parse(localStorage.getItem(USERS_KEY)) || {}; }
   catch { return {}; }
 }
@@ -18,7 +18,7 @@ function initUsers() {
   }
 }
 
-/* ── DOM refs ── */
+
 const form        = document.getElementById('login-form');
 const usernameEl  = document.getElementById('username');
 const passwordEl  = document.getElementById('password');
@@ -40,7 +40,7 @@ const toast       = document.getElementById('toast');
 let pwVisible  = false;
 let failCount  = 0;
 
-/* ── Toast ── */
+
 function showToast(msg, type = 'error') {
   toast.textContent = msg;
   toast.className = `toast show ${type}`;
@@ -49,7 +49,7 @@ function hideToast() {
   toast.className = 'toast';
 }
 
-/* ── Field helpers ── */
+
 function setFieldError(id, errId, msg) {
   const el  = document.getElementById(id);
   const err = document.getElementById(errId);
@@ -72,7 +72,7 @@ function markValid(id) {
   document.getElementById(id).classList.add('is-valid');
 }
 
-/* ── Validation rules ── */
+
 function validateUsername(v) {
   if (!v.trim())        return 'Username or email is required.';
   if (v.trim().length < 3) return 'Must be at least 3 characters.';
@@ -85,7 +85,7 @@ function validatePassword(v) {
   return null;
 }
 
-/* ── Live validation on blur ── */
+
 usernameEl.addEventListener('blur', () => {
   const err = validateUsername(usernameEl.value);
   if (err) setFieldError('username', 'username-error', err);
@@ -110,7 +110,7 @@ passwordEl.addEventListener('input', () => {
   }
 });
 
-/* ── Toggle password visibility ── */
+
 togglePwBtn.addEventListener('click', () => {
   pwVisible = !pwVisible;
   passwordEl.type = pwVisible ? 'text' : 'password';
@@ -120,7 +120,7 @@ togglePwBtn.addEventListener('click', () => {
   passwordEl.focus();
 });
 
-/* ── Form submit ── */
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   hideToast();
@@ -144,14 +144,14 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
-  /* Loading state */
+  
   btnLabel.textContent  = 'Signing in…';
   btnSpinner.style.display = 'block';
   submitBtn.disabled    = true;
 
   await new Promise(r => setTimeout(r, 800));
 
-  /* Credential check */
+  
   const users    = getUsers();
   const matchKey = Object.keys(users).find(k =>
     k === user.toLowerCase() || users[k].email === user.toLowerCase()
@@ -177,7 +177,7 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-/* ── Reset ── */
+
 resetBtn.addEventListener('click', () => {
   form.reset();
   hideToast();
@@ -202,7 +202,7 @@ resetBtn.addEventListener('click', () => {
   usernameEl.focus();
 });
 
-/* ── Forgot password ── */
+
 forgotBtn.addEventListener('click', () => {
   const user = usernameEl.value.trim();
   if (!user) {
@@ -220,7 +220,7 @@ forgotBtn.addEventListener('click', () => {
   showToast(msg, matchKey ? 'info' : 'error');
 });
 
-/* ── Success screen ── */
+
 function showSuccessScreen(username, userData) {
   loginView.style.display = 'none';
   successView.classList.add('show');
@@ -233,7 +233,7 @@ function showSuccessScreen(username, userData) {
   userInitials.textContent = initials;
 }
 
-/* ── Logout ── */
+
 logoutBtn.addEventListener('click', () => {
   localStorage.removeItem(SESSION_KEY);
   successView.classList.remove('show');
@@ -250,7 +250,7 @@ logoutBtn.addEventListener('click', () => {
   usernameEl.focus();
 });
 
-/* ── Session restore ── */
+
 (function checkSession() {
   try {
     const raw = localStorage.getItem(SESSION_KEY);
@@ -262,8 +262,8 @@ logoutBtn.addEventListener('click', () => {
     }
     const users = getUsers();
     if (users[user]) showSuccessScreen(user, users[user]);
-  } catch { /* ignore */ }
+  } catch {  }
 })();
 
-/* ── Init ── */
+
 initUsers();

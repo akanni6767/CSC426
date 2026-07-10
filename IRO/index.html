@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRO - Issues Reporting Outlet</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        
+        header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        header h1 span {
+            color: #ffd54f;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .badge {
+            background: #ffd54f;
+            color: #1a237e;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #1a237e;
+            border-bottom: 3px solid #e8eaf6;
+            padding-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #37474f;
+        }
+
+        .form-group label .optional {
+            font-weight: 400;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1a237e;
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn {
+            background: #1a237e;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .feed-header h2 {
+            margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .report-count {
+            background: #e8eaf6;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a237e;
+        }
+
+        .report-item {
+            background: white;
+            padding: 18px 20px;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border-left: 5px solid #e0e0e0;
+            transition: 0.3s;
+        }
+
+        .report-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-item .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .report-item .reporter {
+            font-weight: 600;
+            color: #1a237e;
+        }
+
+        .report-item .timestamp {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .report-item .category {
+            font-size: 13px;
+            color: #666;
+            background: #f5f5f5;
+            padding: 2px 12px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .report-item .description {
+            margin: 8px 0 10px 0;
+            color: #444;
+        }
+
+        .report-item .community {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .report-item .community strong {
+            color: #1a237e;
+        }
+
+        
+        .priority-badge {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority-high {
+            background: #ffebee;
+            color: #c62828;
+            border-left-color: #c62828;
+        }
+        .priority-high .priority-badge {
+            background: #c62828;
+            color: white;
+        }
+
+        .priority-medium {
+            background: #fff8e1;
+            color: #f57f17;
+            border-left-color: #f57f17;
+        }
+        .priority-medium .priority-badge {
+            background: #f57f17;
+            color: white;
+        }
+
+        .priority-low {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left-color: #2e7d32;
+        }
+        .priority-low .priority-badge {
+            background: #2e7d32;
+            color: white;
+        }
+
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 56px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h3 {
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a237e;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: 0.5s;
+            z-index: 1000;
+            font-weight: 500;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #2e7d32;
+        }
+
+        .toast.error {
+            background: #c62828;
+        }
+
+        
+        @media (max-width: 760px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .feed-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            body {
+                padding: 12px;
+            }
+
+            .toast {
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 18px;
+            }
+            .badge {
+                font-size: 11px;
+                padding: 5px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        
+        <header>
+            <div>
+                <h1>📋 IRO <span>Issues Reporting Outlet</span></h1>
+                <p>Bridging the gap between AAUA and host communities</p>
+            </div>
+            <div class="badge">⚡ Feasibility Prototype</div>
+        </header>
+
+        
+        <section class="card" id="submitSection">
+            <h2>📝 Report an Issue</h2>
+            <form id="reportForm">
+                <div class="form-group">
+                    <label>Your Name <span class="optional">(optional — leave blank for anonymous)</span></label>
+                    <input type="text" id="reporterName" placeholder="e.g. John Doe or leave blank">
+                </div>
+
+                <div class="form-group">
+                    <label>Community *</label>
+                    <select id="community" required>
+                        <option value="">— Select your community —</option>
+                        <option value="Akungba">Akungba</option>
+                        <option value="Iwaro">Iwaro</option>
+                        <option value="Etioro">Etioro</option>
+                        <option value="Ayegunle">Ayegunle</option>
+                        <option value="AAUA Students (General)">AAUA Students (General)</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="category" required>
+                            <option value="">— Select —</option>
+                            <option value="Security">Security</option>
+                            <option value="Infrastructure">Infrastructure</option>
+                            <option value="Welfare">Welfare</option>
+                            <option value="Sanitation">Sanitation</option>
+                            <option value="Electricity">Electricity</option>
+                            <option value="Water">Water</option>
+                            <option value="Road">Road</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority *</label>
+                        <select id="priority" required>
+                            <option value="">— Select —</option>
+                            <option value="Low">🟢 Low</option>
+                            <option value="Medium">🟡 Medium</option>
+                            <option value="High">🔴 High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="description" placeholder="Describe the issue in detail..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn">🚀 Submit Report</button>
+            </form>
+        </section>
+
+        
+        <section class="card" id="feedSection">
+            <div class="feed-header">
+                <h2>📊 Live Reports Feed</h2>
+                <span class="report-count" id="reportCount">0 reports</span>
+            </div>
+            <div id="reportsContainer">
+                
+            </div>
+        </section>
+
+    </div>
+
+    
+    <div id="toast" class="toast"></div>
+
+    <script>
+        
+        
+        
+
+        const STORAGE_KEY = 'iro_reports';
+
+        
+        function getReports() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        
+        function saveReports(reports) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+        }
+
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, function(m) {
+                return map[m];
+            });
+        }
+
+        // ----- Helper: Format timestamp -----
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString('en-NG', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // ============================================================
+        //  RENDER REPORTS
+        // ============================================================
+
+        function renderReports() {
+            const reports = getReports();
+            const container = document.getElementById('reportsContainer');
+            const countBadge = document.getElementById('reportCount');
+
+            // Update count
+            countBadge.textContent = `${reports.length} report${reports.length !== 1 ? 's' : ''}`;
+
+            if (reports.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <h3>No reports yet</h3>
+                        <p>Be the first to submit an issue in your community!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort: newest first (reverse chronological)
+            const sorted = [...reports].sort((a, b) => b.timestamp - a.timestamp);
+
+            let html = '';
+            for (const report of sorted) {
+                // Determine priority class for styling
+                const priorityClass = `priority-${report.priority.toLowerCase()}`;
+
+                html += `
+                    <div class="report-item ${priorityClass}">
+                        <div class="report-header">
+                            <span class="reporter">👤 ${escapeHtml(report.reporter)}</span>
+                            <span class="priority-badge">${escapeHtml(report.priority)}</span>
+                        </div>
+                        <div class="report-header" style="margin-top: -4px;">
+                            <span class="category">📂 ${escapeHtml(report.category)}</span>
+                            <span class="timestamp">🕐 ${formatTimestamp(report.timestamp)}</span>
+                        </div>
+                        <p class="description">${escapeHtml(report.description)}</p>
+                        <div class="community">
+                            <strong>📍 Community:</strong> ${escapeHtml(report.community)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // ============================================================
+        //  SUBMIT FORM
+        // ============================================================
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            // Force reflow
+            void toast.offsetWidth;
+            toast.classList.add('show');
+
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        document.getElementById('reportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // 1. Get form values
+            let name = document.getElementById('reporterName').value.trim();
+            const community = document.getElementById('community').value;
+            const category = document.getElementById('category').value;
+            const priority = document.getElementById('priority').value;
+            const description = document.getElementById('description').value.trim();
+
+            // 2. Validate
+            if (!community || !category || !priority || !description) {
+                showToast('⚠️ Please fill in all required fields.', 'error');
+                return;
+            }
+
+            // 3. Sanitize inputs
+            const sanitizedName = escapeHtml(name || 'Anonymous');
+            const sanitizedCommunity = escapeHtml(community);
+            const sanitizedCategory = escapeHtml(category);
+            const sanitizedPriority = escapeHtml(priority);
+            const sanitizedDescription = escapeHtml(description);
+
+            // 4. Build report object
+            const report = {
+                id: Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                reporter: sanitizedName,
+                community: sanitizedCommunity,
+                category: sanitizedCategory,
+                priority: sanitizedPriority,
+                description: sanitizedDescription,
+                timestamp: Date.now()
+            };
+
+            // 5. Save to localStorage
+            const reports = getReports();
+            reports.push(report);
+            saveReports(reports);
+
+            // 6. Clear form
+            document.getElementById('reportForm').reset();
+            // Keep name field empty for next anonymous submission
+            document.getElementById('reporterName').value = '';
+
+            // 7. Re-render feed
+            renderReports();
+
+            // 8. Show success
+            showToast('✅ Report submitted successfully!', 'success');
+        });
+
+        // ============================================================
+        //  INIT — Load reports on page load
+        // ============================================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderReports();
+
+            // Auto-refresh every 10 seconds (for demo / multi-tab sync)
+            setInterval(renderReports, 10000);
+        });
+
+        // ============================================================
+        //  KEYBOARD SHORTCUT: Ctrl+Enter to submit
+        // ============================================================
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                const form = document.getElementById('reportForm');
+                if (document.activeElement && form.contains(document.activeElement)) {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -21,7 +21,7 @@ const handle_used_operators = value => {
 }
 
 const handle_reminder = (first, second) => {
-    // console.log(first, second);
+    
     return first % second;
 }
 
@@ -33,7 +33,7 @@ const handle_power = (base, pow) => {
     return _pow;
 }
 
-// delete sequence
+
 const delete_seq = exps => {
     if (exps == undefined) {
         return handleClear();
@@ -49,7 +49,7 @@ const delete_seq = exps => {
     return exps;
 }
 
-// clear func
+
 const handleClear = (show_update=true) => {
     op1 = '', op2 = '', basic_op = '', __error_result = '', __progress_result = '';
     used_op = '', allowInput = true, _live_calc = '';
@@ -57,15 +57,15 @@ const handleClear = (show_update=true) => {
     show_update ? update_progress(empty_space) : '';
 }
 
-// raw
-// const raw = document.querySelector('#raw');
+
+
 
 
 const update_progress = (value = '') => {
     if (!value) {
         value = __progress_result;
     }
-    // console.log(value, 'vlauel')
+    
     if (value == 'undefined' || value == '') {
         document.querySelector('#progress').innerHTML = empty_space;
     } else {
@@ -76,7 +76,7 @@ const update_progress = (value = '') => {
             let re_ops = ' ' + ops + ' ';
             if (exprss.includes(ops)) {
                 exprss = exprss.replaceAll(ops, re_ops);
-                // console.log('resssp', exprss)
+                
             }
         });
         document.querySelector('#progress').innerHTML = exprss;
@@ -93,7 +93,7 @@ const isExpContain_ex_operators = exp => {
     return ex;
 }
 
-// handle op1 and op2
+
 const handle_operands = async (exp, current_input) => {
     const ops = isExpContain_ex_operators(exp);
     
@@ -108,7 +108,7 @@ const handle_operands = async (exp, current_input) => {
             if (await isAri_exp(exps[1])) {
                 if (await basicMath(current_input)) {
                     op2 = handleBasic_op(exps[1]);
-                    // perform operation on exps
+                    
                     if (op2 !== undefined) {
                         solve_operands(op1, op2, sep, current_input);
                     }
@@ -126,9 +126,9 @@ const solve_operands = (op1, op2, operator, cur_input) => {
         _live_calc = remind;
         save_recent(remind);
     }
-    // console.log('operator',operator)
+    
     if (operator == "^") {
-        // console.log('powe')
+        
         const _pow = handle_power(op1, op2);
         _live_calc = _pow;
         save_recent(_pow);
@@ -154,7 +154,7 @@ const show_progress = current_input => {
             __progress_result = '';
             return handleClear();
         }
-        // console.log('secod')
+        
         update_progress(__progress_result);
     }
 
@@ -167,36 +167,36 @@ const save_recent = value => {
     document.querySelector('#recent').innerHTML = __recent_result;
 }
 
-// check basic math in expression
+
 const basicMath = async current_input => {
     return new Promise((res, rej) => {
         let isBasic = true;
 
-        // only arithemetic operations
-        // operators.forEach(ari_op => {
-        //     if (used_op.includes(ari_op)) {
-        //         console.log(ari_op)
-        //         isBasic = true;
-        //     }
-        // });
         
-        // if last value is ari_op => false
+        
+        
+        
+        
+        
+        
+        
+        
         if (operators.includes(current_input)) isBasic = false;
 
-        // if expr contain ex_op false
+        
         const merge_ex_ops = [...ex_operators, ...back_fn];
         merge_ex_ops.forEach(ex_op => {
             if (used_op.includes(ex_op)) {
                 isBasic = false;
             }
         })
-        // raw.innerHTML = isBasic + used_op;
+        
     
         res(isBasic);
     });
 }
 
-// arithemetic exp
+
 const isAri_exp = async exp => {
     return new Promise((res, rej) => {
         exp.split("").forEach(str => {
@@ -208,29 +208,29 @@ const isAri_exp = async exp => {
     })
 }
 
-// backend_op
+
 const isBack_op = value => {
     return back_fn.includes(value);
 }
 
-// isEx_operators
+
 const isEx_operator = value => {
     return ex_operators.includes(value);
 }
 
-// operators used in exp
+
 
 const handleClick = async (value) => {
-    // clear func
+    
     if (isBack_op(value) && value == 'ac') {
 
         return handleClear();
     }
 
-     // handle sequence delete 
+     
     if (isBack_op(value) && value == 'del') {
         let del_exp = (delete_seq(__progress_result));
-        // console.log(del_exp)
+        
         if (del_exp == undefined) return;
         del_exp = del_exp.join('');
 
@@ -240,25 +240,25 @@ const handleClick = async (value) => {
             __progress_result = "";
         }
 
-        // console.log(__progress_result, '__progress_result');
+        
         return update_progress();
     }
     
-    // raw.innerHTML = basicMath();
+    
     show_progress(value);
 
     handle_used_operators(value);
 
-    // raw.innerHTML = used_op;
-    // basic math
+    
+    
     if (await isAri_exp(__progress_result)) {
         if (await basicMath(value)) {
-            // __error_result += ''
+            
             _live_calc = handleBasic_op(__progress_result);
             
             save_recent(_live_calc);
         }
-        // handle percentage
+        
     } 
     if (isEx_operator(value) && value == '%') {
         let percent = handle_percentage(_live_calc);
@@ -267,8 +267,8 @@ const handleClick = async (value) => {
     }
     
     
-    // Re-construct expression
-    // handle mod
+    
+    
     const rem = "\\";
     if (isEx_operator(value) && value == rem) {
         if (__progress_result.trim() == '') {
@@ -280,7 +280,7 @@ const handleClick = async (value) => {
         used_op = '';
     }
     
-    // handle mod
+    
     const _pow = "^";
     if (isEx_operator(value) && value == _pow) {
         __progress_result = _live_calc + ' '+_pow+' ';
@@ -289,7 +289,7 @@ const handleClick = async (value) => {
     }
 
 
-    // handle solve 
+    
     if (isBack_op(value) && value == '=') {
         __recent_result = _live_calc;
         __progress_result = _live_calc ? _live_calc : 0;
@@ -309,7 +309,7 @@ const handleBasic_op = exp => {
     } catch ( error ) {
         __error_result = 'Error!';
         op2 = '';
-        // raw.innerHTML = __error_result;
+        
         show_progress('');
         handleClear();
         update_progress(__error_result);

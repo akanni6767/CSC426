@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IRO – Issues Reporting Outlet</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <main>
+        <!-- ===== LOGIN SCREEN ===== -->
+        <section id="loginScreen" aria-labelledby="loginHeading">
+            <header class="login-header">
+                <div class="brand">
+                    <h1 id="loginHeading"><i class="fas fa-clipboard-list"></i> <span>IRO</span></h1>
+                    <p>Issues Reporting Outlet – AAUA &amp; Host Communities</p>
+                </div>
+            </header>
+            <div class="login-panel">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginName"><i class="fas fa-user"></i> Your Name</label>
+                        <input type="text" id="loginName" placeholder="Enter your name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="loginRole"><i class="fas fa-user-tag"></i> I am a...</label>
+                        <select id="loginRole" required>
+                            <option value="">— Select role —</option>
+                            <option value="Student">Student</option>
+                            <option value="Indigene">Indigene</option>
+                            <option value="Authorized">Authorized (Admin/Liaison)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Enter IRO</button>
+                </form>
+                <p class="login-note"><i class="fas fa-info-circle"></i> Demo: choose any role to explore</p>
+            </div>
+        </section>
+
+        <!-- ===== MAIN APP ===== -->
+        <section id="app" aria-labelledby="appHeading">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="brand">
+                    <h1 id="appHeading"><i class="fas fa-clipboard-list"></i> <span>IRO</span> – Issues Reporting</h1>
+                    <div class="app-tagline"><i class="fas fa-handshake"></i> Bridging AAUA &amp; host communities</div>
+                </div>
+                <div class="user-info">
+                    <span id="displayName"></span>
+                    <span class="role-badge" id="displayRole"></span>
+                    <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </header>
+
+            <!-- ===== STATS CARDS (new) ===== -->
+            <section class="stats-row" id="statsRow">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number" id="statTotal">0</span>
+                        <span class="stat-label">Total Reports</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number" id="statPending">0</span>
+                        <span class="stat-label">Pending</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number" id="statResolved">0</span>
+                        <span class="stat-label">Resolved</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="stat-details">
+                        <span class="stat-number" id="statHigh">0</span>
+                        <span class="stat-label">High Priority</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Two‑column grid (form + feed) -->
+            <div class="grid-container">
+                <!-- Submit Form -->
+                <article class="card" id="submitSection">
+                    <h2><i class="fas fa-pen"></i> Report an Issue</h2>
+                    <form id="reportForm">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Your Name <span class="optional">(optional – blank = Anonymous)</span></label>
+                            <input type="text" id="reporterName" placeholder="e.g. John Doe or leave blank" />
+                        </div>
+                        <div class="form-group">
+                            <label>Community *</label>
+                            <select id="community" required>
+                                <option value="">— Select your community —</option>
+                                <option value="Akungba">Akungba</option>
+                                <option value="Iwaro">Iwaro</option>
+                                <option value="Etioro">Etioro</option>
+                                <option value="Ayegunle">Ayegunle</option>
+                                <option value="AAUA Students (General)">AAUA Students (General)</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Category *</label>
+                                <select id="category" required>
+                                    <option value="">— Select —</option>
+                                    <option value="Security">Security</option>
+                                    <option value="Infrastructure">Infrastructure</option>
+                                    <option value="Welfare">Welfare</option>
+                                    <option value="Sanitation">Sanitation</option>
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Water">Water</option>
+                                    <option value="Road">Road</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Priority *</label>
+                                <select id="priority" required>
+                                    <option value="">— Select —</option>
+                                    <option value="Low"><i class="fas fa-circle" style="color:#2e7d32;"></i> Low</option>
+                                    <option value="Medium"><i class="fas fa-circle" style="color:#f57f17;"></i> Medium</option>
+                                    <option value="High"><i class="fas fa-circle" style="color:#c62828;"></i> High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea id="description" placeholder="Describe the issue in detail..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Submit Report</button>
+                    </form>
+                </article>
+
+                <!-- Reports Feed -->
+                <article class="card" id="feedSection">
+                    <div class="feed-header">
+                        <h2><i class="fas fa-stream"></i> Live Reports Feed</h2>
+                        <span class="report-count" id="reportCount">0 reports</span>
+                    </div>
+                    <div id="reportsContainer"></div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>

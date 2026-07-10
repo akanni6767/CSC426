@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SecureLogin — Authentication</title>
   <style>
-    /* ── Reset & base ── */
+    
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -40,7 +40,7 @@
       padding: 1.5rem;
     }
 
-    /* ── Background grid ── */
+    
     body::before {
       content: '';
       position: fixed;
@@ -52,7 +52,7 @@
       pointer-events: none;
     }
 
-    /* ── Card wrapper ── */
+    
     .card-wrap {
       width: 100%;
       max-width: 420px;
@@ -60,7 +60,7 @@
       z-index: 1;
     }
 
-    /* ── Logo / brand ── */
+    
     .brand {
       display: flex;
       align-items: center;
@@ -89,7 +89,7 @@
       margin-top: 1px;
     }
 
-    /* ── Card ── */
+    
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -110,7 +110,7 @@
       margin-top: 4px;
     }
 
-    /* ── Form ── */
+    
     .form-group {
       margin-bottom: 1.1rem;
     }
@@ -186,7 +186,7 @@
       -webkit-text-fill-color: var(--text);
     }
 
-    /* ── Field error ── */
+    
     .field-error {
       font-size: 0.78rem;
       color: var(--error);
@@ -197,7 +197,7 @@
     }
     .field-error.show { display: flex; }
 
-    /* ── Password strength ── */
+    
     .strength-bar {
       margin-top: 7px;
       display: none;
@@ -221,7 +221,7 @@
       margin-top: 4px;
     }
 
-    /* ── Options row ── */
+    
     .options-row {
       display: flex;
       align-items: center;
@@ -259,7 +259,7 @@
     }
     .link-btn:hover { color: #7aabff; }
 
-    /* ── Buttons ── */
+    
     .btn-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -297,7 +297,7 @@
     .btn-secondary:hover { background: var(--surface2); color: var(--text); }
     .btn-secondary:focus-visible { outline: 2px solid var(--border2); outline-offset: 3px; }
 
-    /* ── Spinner ── */
+    
     .spinner {
       width: 16px;
       height: 16px;
@@ -309,7 +309,7 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Toast / banner ── */
+    
     .toast {
       border-radius: var(--radius-sm);
       padding: 12px 14px;
@@ -339,7 +339,7 @@
       color: #7aabff;
     }
 
-    /* ── Divider ── */
+    
     .divider {
       display: flex;
       align-items: center;
@@ -355,7 +355,7 @@
       background: var(--border);
     }
 
-    /* ── Demo credentials hint ── */
+    
     .demo-hint {
       background: var(--surface2);
       border: 1px solid var(--border);
@@ -375,7 +375,7 @@
       color: var(--accent);
     }
 
-    /* ── Success screen ── */
+    
     .success-screen {
       text-align: center;
       padding: 1rem 0 0.5rem;
@@ -429,7 +429,7 @@
       color: #fff;
     }
 
-    /* ── Footer note ── */
+    
     .footer-note {
       text-align: center;
       font-size: 0.75rem;
@@ -439,14 +439,14 @@
     .footer-note a { color: var(--accent); text-decoration: none; }
     .footer-note a:hover { text-decoration: underline; }
 
-    /* ── Responsive ── */
+    
     @media (max-width: 480px) {
       .card { padding: 1.5rem 1.25rem; }
       .btn-row { grid-template-columns: 1fr; }
       .btn-secondary { order: 2; }
     }
 
-    /* ── Reduced motion ── */
+    
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
@@ -456,7 +456,7 @@
 
 <div class="card-wrap" role="main">
 
-  <!-- Brand -->
+  
   <div class="brand" aria-hidden="true">
     <div class="brand-icon">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -473,14 +473,14 @@
 
   <div class="card">
 
-    <!-- Login form view -->
+    
     <div id="login-view">
       <div class="card-header">
         <h1 class="card-title">Welcome back</h1>
         <p class="card-sub">Sign in to your account to continue</p>
       </div>
 
-      <!-- Toast banners -->
+      
       <div class="toast error" id="toast-error" role="alert" aria-live="assertive">
         <span class="toast-icon">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM7.25 4.75a.75.75 0 0 1 1.5 0v3.5a.75.75 0 0 1-1.5 0v-3.5zM8 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
@@ -495,10 +495,10 @@
         <span class="toast-msg">Form cleared — enter your credentials to try again.</span>
       </div>
 
-      <!-- Form -->
+      
       <form id="login-form" novalidate autocomplete="on">
 
-        <!-- Username -->
+        
         <div class="form-group">
           <label for="username">Username or email</label>
           <div class="input-wrap">
@@ -523,7 +523,7 @@
           </div>
         </div>
 
-        <!-- Password -->
+        
         <div class="form-group">
           <label for="password">Password</label>
           <div class="input-wrap">
@@ -556,7 +556,7 @@
           </div>
         </div>
 
-        <!-- Options row -->
+        
         <div class="options-row">
           <label class="checkbox-wrap">
             <input type="checkbox" id="remember-me" name="remember" />
@@ -565,7 +565,7 @@
           <button type="button" class="link-btn" id="forgot-btn" aria-label="Forgot password — click to get reset instructions">Forgot password?</button>
         </div>
 
-        <!-- Buttons -->
+        
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" id="reset-btn" aria-label="Clear form and reset">
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -589,7 +589,7 @@
       </div>
     </div>
 
-    <!-- Success view (shown after login) -->
+    
     <div class="success-screen" id="success-view" role="region" aria-label="Login successful">
       <div class="success-check" aria-hidden="true">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#34c48a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -607,7 +607,7 @@
       </button>
     </div>
 
-  </div><!-- .card -->
+  </div>
 
   <p class="footer-note">
     By signing in you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.<br/>
@@ -616,7 +616,7 @@
 </div>
 
 <script>
-  /* ── Demo user store (localStorage) ── */
+  
   const USERS_KEY = 'securelogin_users';
   const SESSION_KEY = 'securelogin_session';
 
@@ -635,7 +635,7 @@
 
   initUsers();
 
-  /* ── DOM refs ── */
+  
   const form       = document.getElementById('login-form');
   const usernameEl = document.getElementById('username');
   const passwordEl = document.getElementById('password');
@@ -658,7 +658,7 @@
 
   let pwVisible = false;
 
-  /* ── Field validation helpers ── */
+  
   function showFieldError(fieldId, errorId, errorTextId, msg) {
     const field = document.getElementById(fieldId);
     const err   = document.getElementById(errorId);
@@ -684,7 +684,7 @@
     field.classList.remove('is-invalid');
   }
 
-  /* ── Toast helpers ── */
+  
   function showErrorToast(msg) {
     toastEMsg.textContent = msg;
     toastError.classList.add('show');
@@ -695,21 +695,21 @@
     toastReset.classList.remove('show');
   }
 
-  /* ── Validate username ── */
+  
   function validateUsername(val) {
     if (!val.trim()) return 'Username or email is required.';
     if (val.trim().length < 3) return 'Must be at least 3 characters.';
     return null;
   }
 
-  /* ── Validate password ── */
+  
   function validatePassword(val) {
     if (!val) return 'Password is required.';
     if (val.length < 6) return 'Password must be at least 6 characters.';
     return null;
   }
 
-  /* ── Live field validation on blur ── */
+  
   usernameEl.addEventListener('blur', () => {
     const err = validateUsername(usernameEl.value);
     if (err) { showFieldError('username','username-error','username-error-text', err); }
@@ -736,7 +736,7 @@
     }
   });
 
-  /* ── Toggle password visibility ── */
+  
   togglePw.addEventListener('click', () => {
     pwVisible = !pwVisible;
     passwordEl.type = pwVisible ? 'text' : 'password';
@@ -746,10 +746,10 @@
     passwordEl.focus();
   });
 
-  /* ── Track failed attempts ── */
+  
   let failCount = 0;
 
-  /* ── Form submit ── */
+  
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     hideToasts();
@@ -757,7 +757,7 @@
     const user = usernameEl.value.trim();
     const pass = passwordEl.value;
 
-    // Validate both
+    
     const uErr = validateUsername(user);
     const pErr = validatePassword(pass);
 
@@ -769,21 +769,21 @@
 
     if (uErr || pErr) return;
 
-    // Lockout after 5 failures
+    
     if (failCount >= 5) {
       showErrorToast('Too many failed attempts. Please reset the form and try again, or contact support.');
       return;
     }
 
-    // Loading state
+    
     btnLabel.textContent = 'Signing in…';
     btnSpinner.style.display = 'block';
     submitBtn.disabled = true;
 
-    // Simulate async auth delay
+    
     await new Promise(r => setTimeout(r, 900));
 
-    // Check credentials
+    
     const users = getUsers();
     const found = users[user.toLowerCase()] || Object.values(users).find(u => u.email === user.toLowerCase());
     const matchKey = Object.keys(users).find(k =>
@@ -791,7 +791,7 @@
     );
 
     if (matchKey && users[matchKey].password === pass) {
-      // Success
+      
       failCount = 0;
       const remember = document.getElementById('remember-me').checked;
       if (remember) {
@@ -799,7 +799,7 @@
       }
       showSuccessScreen(matchKey, users[matchKey]);
     } else {
-      // Failure
+      
       failCount++;
       const remaining = 5 - failCount;
       let msg = 'Incorrect username or password.';
@@ -808,14 +808,14 @@
       showFieldError('password','password-error','password-error-text', ' ');
       showErrorToast(msg);
 
-      // Reset button state
+      
       btnLabel.textContent = 'Sign in';
       btnSpinner.style.display = 'none';
       submitBtn.disabled = false;
     }
   });
 
-  /* ── Show success screen ── */
+  
   function showSuccessScreen(username, userData) {
     loginView.style.display = 'none';
     successView.classList.add('show');
@@ -830,7 +830,7 @@
     userInitials.textContent = initials;
   }
 
-  /* ── Reset form ── */
+  
   resetBtn.addEventListener('click', () => {
     form.reset();
     hideToasts();
@@ -855,7 +855,7 @@
     usernameEl.focus();
   });
 
-  /* ── Forgot password ── */
+  
   forgotBtn.addEventListener('click', () => {
     hideToasts();
     const user = usernameEl.value.trim();
@@ -877,7 +877,7 @@
     infoToast.querySelector('.toast-msg').textContent = msg;
   });
 
-  /* ── Logout ── */
+  
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem(SESSION_KEY);
     successView.classList.remove('show');
@@ -894,7 +894,7 @@
     usernameEl.focus();
   });
 
-  /* ── Resume session if "remember me" was checked ── */
+  
   (function checkSession() {
     try {
       const raw = localStorage.getItem(SESSION_KEY);
@@ -904,7 +904,7 @@
       if (age > 7 * 24 * 60 * 60 * 1000) { localStorage.removeItem(SESSION_KEY); return; }
       const users = getUsers();
       if (users[user]) showSuccessScreen(user, users[user]);
-    } catch { /* ignore */ }
+    } catch {  }
   })();
 </script>
 </body>
